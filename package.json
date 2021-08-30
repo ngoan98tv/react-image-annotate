@@ -1,5 +1,5 @@
 {
-  "name": "react-image-annotate",
+  "name": "@ngoan98tv/react-image-annotate",
   "version": "1.8.0",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.12",
@@ -41,7 +41,7 @@
   "homepage": "/react-image-annotate",
   "repository": {
     "type": "git",
-    "url": "https://github.com/UniversalDataTool/react-image-annotate.git"
+    "url": "https://github.com/ngoan98tv/react-image-annotate.git"
   },
   "scripts": {
     "start": "react-scripts start",
