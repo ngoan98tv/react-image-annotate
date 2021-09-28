@@ -245,7 +245,7 @@ export const MainLayout = ({
                   keyframes={state.keyframes}
                 />
               ) : activeImage ? (
-                <div className={classes.headerTitle}>{activeImage.name}</div>
+                <div className={classes.headerTitle}>({state.selectedImage + 1}/{state.images.length}) {activeImage.name}</div>
               ) : null,
             ].filter(Boolean)}
             headerItems={[
