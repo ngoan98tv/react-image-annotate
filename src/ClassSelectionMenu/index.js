@@ -90,7 +90,7 @@ export const ClassSelectionMenu = ({
           </Label>
           <DashSep />
           <Number className={classnames({ selected: label === selectedCls })}>
-            {index < 9 ? `Key [${index + 1}]` : ""}
+            {index < 9 ? `Key [${index + 1}]` : "None"}
           </Number>
         </LabelContainer>
       ))}
