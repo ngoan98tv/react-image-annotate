@@ -12,8 +12,7 @@ const Site = () => {
     .replace(/\/$/, "")
     .split("/")
     .slice(-1)[0]
-  return <Theme>
-    <DemoSite /></Theme>
+    return <Theme>{path === "demo" ? <DemoSite /> : <LandingPage />}</Theme>
 }
 
 ReactDOM.render(<Site />, document.getElementById("root"))
