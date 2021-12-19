@@ -8,7 +8,7 @@ const TransformGrabber = styled("div")({
   width: 8,
   height: 8,
   zIndex: 2,
-  border: "2px solid #FFF",
+  border: "2px solid #f44336",
   position: "absolute",
 })
 
@@ -155,7 +155,7 @@ export const RegionSelectAndTransformBox = memo(
                       zIndex: 10,
                       left: proj.x - 4,
                       top: proj.y - 4,
-                      border: "2px dotted #fff",
+                      border: "2px dotted #f44336",
                       opacity: 0.5,
                     }}
                   />
