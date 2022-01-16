@@ -47,7 +47,7 @@ const useStyles = makeStyles({
     },
   },
   expandedContent: {
-    maxHeight: 300,
+    maxHeight: "100%",
     overflowY: "auto",
     "&.noScroll": {
       overflowY: "visible",
@@ -77,7 +77,7 @@ export const SidebarBoxContainer = ({
   const toggleExpanded = useEventCallback(() => changeExpanded(!expanded))
 
   return (
-    <SidebarBox icon={icon} title={title}>
+    <SidebarBox icon={icon} title={title} style={{ backgroundColor: "red" }}>
       {children}
     </SidebarBox>
   )

@@ -19,12 +19,6 @@ import isEqual from "lodash/isEqual"
 
 const useStyles = makeStyles(styles)
 
-const HeaderSep = styled("div")({
-  borderTop: `1px solid ${grey[200]}`,
-  marginTop: 2,
-  marginBottom: 2,
-})
-
 const Chip = ({ color, text }) => {
   const classes = useStyles()
   return (
@@ -41,7 +35,8 @@ const RowLayout = ({
   order,
   classification,
   area,
-  tags,
+  comment,
+  color,
   trash,
   lock,
   visible,
@@ -58,10 +53,10 @@ const RowLayout = ({
     >
       <Grid container alignItems="center">
         <Grid item xs={2}>
-          <div style={{ textAlign: "right", paddingRight: 10 }}>{order}</div>
+          <Chip color={color} text={order} />
         </Grid>
         <Grid item xs={5}>
-          {classification}
+          <div className="text">{classification}</div>
         </Grid>
         <Grid item xs={2}>
           <div style={{ textAlign: "right", paddingRight: 6 }}>{area}</div>
@@ -75,27 +70,18 @@ const RowLayout = ({
         <Grid item xs={1}>
           {visible}
         </Grid>
+        <Grid item xs={1}>
+          <div style={{ visibility: "hidden" }}>#</div>
+        </Grid>
+        <Grid item xs={10}>
+          <div className="text" style={{ fontWeight: 400 }}>
+            {comment}
+          </div>
+        </Grid>
       </Grid>
     </div>
   )
 }
-
-const RowHeader = () => {
-  return (
-    <RowLayout
-      header
-      highlighted={false}
-      order={<ReorderIcon className="icon" />}
-      classification={<div style={{ paddingLeft: 10 }}>Class</div>}
-      area={<PieChartIcon className="icon" />}
-      trash={<TrashIcon className="icon" />}
-      lock={<LockIcon className="icon" />}
-      visible={<VisibleIcon className="icon" />}
-    />
-  )
-}
-
-const MemoRowHeader = memo(RowHeader)
 
 const Row = ({
   region: r,
@@ -108,6 +94,7 @@ const Row = ({
   color,
   cls,
   index,
+  comment,
 }) => {
   return (
     <RowLayout
@@ -115,8 +102,10 @@ const Row = ({
       highlighted={highlighted}
       onClick={() => onSelectRegion(r)}
       order={`#${index + 1}`}
-      classification={<Chip text={cls || ""} color={color || "#ddd"} />}
+      classification={cls || ""}
+      color={color || "#ddd"}
       area=""
+      comment={comment}
       trash={<TrashIcon onClick={() => onDeleteRegion(r)} className="icon2" />}
       lock={
         r.locked ? (
@@ -157,7 +146,8 @@ const MemoRow = memo(
     prevProps.id === nextProps.id &&
     prevProps.index === nextProps.index &&
     prevProps.cls === nextProps.cls &&
-    prevProps.color === nextProps.color
+    prevProps.color === nextProps.color &&
+    prevProps.comment === nextProps.comment
 )
 
 const emptyArr = []
@@ -177,8 +167,6 @@ export const RegionSelectorSidebarBox = ({
       expandedByDefault
     >
       <div className={classes.container}>
-        <MemoRowHeader />
-        <HeaderSep />
         {regions.map((r, i) => (
           <MemoRow
             key={r.id}

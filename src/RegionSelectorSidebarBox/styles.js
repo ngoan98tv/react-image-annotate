@@ -43,6 +43,7 @@ export default {
     paddingLeft: 4,
     paddingRight: 4,
     alignItems: "center",
+    justifyContent: "flex-end",
     "& .color": {
       borderRadius: 5,
       width: 10,
