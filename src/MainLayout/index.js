@@ -257,8 +257,8 @@ export const MainLayout = ({
                 ? { name: "Play" }
                 : { name: "Pause" },
               !nextImageHasRegions && activeImage.regions && { name: "Clone" },
-              { name: "Settings" },
-              state.fullScreen ? { name: "Window" } : { name: "Fullscreen" },
+              // { name: "Settings" },
+              // state.fullScreen ? { name: "Window" } : { name: "Fullscreen" },
               { name: "Save" },
             ].filter(Boolean)}
             onClickHeaderItem={onClickHeaderItem}
