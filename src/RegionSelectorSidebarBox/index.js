@@ -1,14 +1,15 @@
 // @flow
 
-import React, { Fragment, useState, memo } from "react"
+import React, { Fragment, useState, memo, useEffect } from "react"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import { makeStyles, styled } from "@material-ui/core/styles"
 import { grey } from "@material-ui/core/colors"
 import RegionIcon from "@material-ui/icons/PictureInPicture"
 import Grid from "@material-ui/core/Grid"
-import ReorderIcon from "@material-ui/icons/SwapVert"
-import PieChartIcon from "@material-ui/icons/PieChart"
+import CheckIcon from "@material-ui/icons/Check"
+import CloseIcon from "@material-ui/icons/Close"
 import TrashIcon from "@material-ui/icons/Delete"
+import EditIcon from "@material-ui/icons/Edit"
 import LockIcon from "@material-ui/icons/Lock"
 import UnlockIcon from "@material-ui/icons/LockOpen"
 import VisibleIcon from "@material-ui/icons/Visibility"
@@ -16,6 +17,7 @@ import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
 import styles from "./styles"
 import classnames from "classnames"
 import isEqual from "lodash/isEqual"
+import { Box, Collapse, TextField } from "@material-ui/core"
 
 const useStyles = makeStyles(styles)
 
@@ -34,8 +36,8 @@ const RowLayout = ({
   highlighted,
   order,
   classification,
-  area,
   comment,
+  onChangeComment,
   color,
   trash,
   lock,
@@ -43,43 +45,84 @@ const RowLayout = ({
   onClick,
 }) => {
   const classes = useStyles()
-  const [mouseOver, changeMouseOver] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [commentValue, setCommentValue] = useState(comment)
+
+  useEffect(() => {
+    setCommentValue(comment)
+  }, [comment])
+
+  const handleSaveComment = () => {
+    setEditing(false)
+    onChangeComment(commentValue)
+  }
+
+  const handleCancelComment = () => {
+    setEditing(false)
+    setCommentValue(comment)
+  }
+
   return (
-    <div
-      onClick={onClick}
-      onMouseEnter={() => changeMouseOver(true)}
-      onMouseLeave={() => changeMouseOver(false)}
-      className={classnames(classes.row, { header, highlighted })}
-    >
-      <Grid container alignItems="center">
-        <Grid item xs={2}>
-          <Chip color={color} text={order} />
+    <>
+      <div
+        onClick={onClick}
+        className={classnames(classes.row, { header, highlighted })}
+      >
+        <Grid container alignItems="center">
+          <Grid item xs={2}>
+            <Chip color={color} text={order} />
+          </Grid>
+          <Grid item xs={6}>
+            <div className="text">{classification}</div>
+          </Grid>
+          <Grid item xs={1}>
+            {!editing && trash}
+          </Grid>
+          <Grid item xs={1}>
+            {!editing && lock}
+          </Grid>
+          <Grid item xs={1}>
+            {!editing && visible}
+            {editing && (
+              <CloseIcon onClick={handleCancelComment} className="icon2" />
+            )}
+          </Grid>
+          <Grid item xs={1}>
+            {!editing && (
+              <EditIcon onClick={() => setEditing(true)} className="icon2" />
+            )}
+            {editing && (
+              <CheckIcon onClick={handleSaveComment} className="icon2" />
+            )}
+          </Grid>
+          <Grid item xs={12}>
+            {!editing && (
+              <div
+                className="text"
+                style={{ fontWeight: 400, padding: "0 18px" }}
+              >
+                {commentValue}
+              </div>
+            )}
+          </Grid>
         </Grid>
-        <Grid item xs={5}>
-          <div className="text">{classification}</div>
-        </Grid>
-        <Grid item xs={2}>
-          <div style={{ textAlign: "right", paddingRight: 6 }}>{area}</div>
-        </Grid>
-        <Grid item xs={1}>
-          {trash}
-        </Grid>
-        <Grid item xs={1}>
-          {lock}
-        </Grid>
-        <Grid item xs={1}>
-          {visible}
-        </Grid>
-        <Grid item xs={1}>
-          <div style={{ visibility: "hidden" }}>#</div>
-        </Grid>
-        <Grid item xs={10}>
-          <div className="text" style={{ fontWeight: 400 }}>
-            {comment}
-          </div>
-        </Grid>
-      </Grid>
-    </div>
+      </div>
+      <Collapse in={editing}>
+        <Box>
+          <TextField
+            multiline
+            minRows={2}
+            value={commentValue}
+            onChange={(e) => setCommentValue(e.target.value)}
+            fullWidth
+            inputProps={{
+              style: { fontSize: 11, padding: "0 24px", lineHeight: 1.2 },
+            }}
+            placeholder="Empty"
+          />
+        </Box>
+      </Collapse>
+    </>
   )
 }
 
@@ -104,8 +147,8 @@ const Row = ({
       order={`#${index + 1}`}
       classification={cls || ""}
       color={color || "#ddd"}
-      area=""
       comment={comment}
+      onChangeComment={(newComment) => onChangeRegion({ ...r, comment: newComment })}
       trash={<TrashIcon onClick={() => onDeleteRegion(r)} className="icon2" />}
       lock={
         r.locked ? (
