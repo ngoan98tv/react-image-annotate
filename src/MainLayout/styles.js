@@ -22,5 +22,9 @@ export default {
     fontWeight: "bold",
     color: grey[700],
     paddingLeft: 16,
+    maxWidth: "400px",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
   },
 }
